@@ -2,12 +2,14 @@ import { Box, darken, Typography } from '@mui/material';
 import MaterialReactTable from 'material-react-table';
 import { useMemo } from 'react';
 import { usersApi } from '../store/index.js';
+import { useThemeMode } from '../theme.js';
 
 
 const Table = () => {
     const { data, isLoading } = usersApi.useGetUsersQuery('');
     const users = data ? data.users : [];
-    console.log('users:', users);
+
+    const [tableTheme, colorMode] = useThemeMode();
 
     const columns = useMemo(
         () => [
