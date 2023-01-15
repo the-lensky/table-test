@@ -9,6 +9,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@mui/icons-material": "^5.11.0",
+    "@mui/material": "^5.11.4",
     "@mui/x-date-pickers": "^5.0.13",
     "@reduxjs/toolkit": "^1.9.1",
     "material-react-table": "^1.5.8",
