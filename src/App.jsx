@@ -1,49 +1,36 @@
 import React, { FC, useMemo } from 'react';
+import { usersApi } from './store';
 import MaterialReactTable from 'material-react-table';
 import { Box, Typography } from '@mui/material';
 
-const Example = () => {
+const App = () => {
+    const { data, isLoading } = usersApi.useGetUsersQuery('');
+    const users = data ? data.users : [];
+    console.log('users:', users);
     const columns = useMemo(
         () => [
             {
-                accessorKey: 'id',
-                header: 'ID',
-                size: 50
-            },
-            {
-                accessorKey: 'name',
-                header: 'First Name'
+                accessorKey: 'firstName',
+                header: 'Full Name',
             },
             {
                 accessorKey: 'lastName',
                 header: 'Last Name'
+            },
+            {
+                accessorKey: 'email',
+                header: 'Email'
             }
         ],
         []
     );
 
-    const data = [
-        {
-            name: 'name1',
-            id: 1,
-            lastName: 'lastName1'
-        },
-        {
-            name: 'name2',
-            id: 2,
-            lastName: 'lastName2'
-        },
-        {
-            name: 'name3',
-            id: 3,
-            lastName: 'lastName3'
-        }
-    ];
+    if (isLoading) return <div>Loading...</div>
 
     return (
         <MaterialReactTable
             columns={columns}
-            data={data}
+            data={users}
             renderDetailPanel={({ row }) => (
                 <Box
                     sx={{
@@ -60,4 +47,4 @@ const Example = () => {
     );
 };
 
-export default Example;
+export default App;
