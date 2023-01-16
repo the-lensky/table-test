@@ -1,17 +1,20 @@
 import { ThemeProvider } from '@mui/material';
 import { useThemeMode } from './theme';
+import { LangProvider } from './hooks/useLang.jsx';
 import Table from './components/Table.jsx';
-import ThemeSwitcher from './components/ThemeSwitcher.jsx';
+import Toolbox from './components/Toolbox.jsx';
 
 
 const App = () => {
     const [tableTheme, colorMode] = useThemeMode();
 
     return (
+        <LangProvider>
             <ThemeProvider theme={tableTheme}>
-                <ThemeSwitcher tableTheme={tableTheme} colorMode={colorMode}/>
+                <Toolbox/>
                 <Table/>
             </ThemeProvider>
+        </LangProvider>
     );
 };
 

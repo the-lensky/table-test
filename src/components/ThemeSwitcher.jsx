@@ -2,11 +2,13 @@ import { Box } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import Brightness7Icon from '@mui/icons-material/Brightness7.js';
 import Brightness4Icon from '@mui/icons-material/Brightness4.js';
+import { useThemeMode } from '../theme.js';
 
 
-const ThemeSwitcher = ({tableTheme, colorMode}) => {
+const ThemeSwitcher = () => {
+    const [tableTheme, colorMode] = useThemeMode();
 
-    return(
+    return (
         <Box
             sx={{
                 display: 'flex',
@@ -20,11 +22,12 @@ const ThemeSwitcher = ({tableTheme, colorMode}) => {
             <IconButton
                 sx={{ ml: 1 }}
                 onClick={colorMode.toggleColorMode}
-                color="inherit">
+                color="inherit"
+            >
                 {tableTheme.palette.mode === 'dark' ? <Brightness7Icon/> : <Brightness4Icon/>}
             </IconButton>
         </Box>
-    )
-}
+    );
+};
 
-export default ThemeSwitcher
+export default ThemeSwitcher;
