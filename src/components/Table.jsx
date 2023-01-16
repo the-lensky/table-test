@@ -2,11 +2,15 @@ import { useMemo } from 'react';
 import { useLang } from '../hooks/useLang.jsx';
 import { usersApi } from '../store/index.js';
 import MaterialReactTable from 'material-react-table';
-import { Avatar, Box, CircularProgress, darken, Tooltip, Typography } from '@mui/material';
+import { Avatar, Box, Button, CircularProgress, darken, Tooltip, Typography } from '@mui/material';
 import { MRT_Localization_RU } from 'material-react-table/locales/ru.js';
 import { MRT_Localization_EN } from 'material-react-table/locales/en';
 import ManIcon from '@mui/icons-material/Man';
 import WomanIcon from '@mui/icons-material/Woman';
+import FileDownloadIcon from '@mui/icons-material/FileDownload';
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
+import { ExportToCsv } from 'export-to-csv';
 
 const Table = () => {
     const { data } = usersApi.useGetUsersQuery('');
@@ -66,6 +70,32 @@ const Table = () => {
         [lang]
     );
 
+    const handleExportDataPDF = () => {
+        const doc = new jsPDF();
+        doc.autoTable({
+            theme: 'grid',
+            html: 'table'
+        });
+        doc.save('table.pdf');
+    };
+
+    const csvOptions = {
+        fieldSeparator: ',',
+        quoteStrings: '"',
+        decimalSeparator: '.',
+        showLabels: true,
+        useBom: true,
+        useKeysAsHeaders: false,
+        headers: columns.map((c) => c.header)
+    };
+
+    const csvExporter = new ExportToCsv(csvOptions);
+
+    const handleExportDataCSV = () => {
+        csvExporter.generateCsv(users);
+    };
+
+
     return (
         <MaterialReactTable
             columns={columns}
@@ -98,6 +128,36 @@ const Table = () => {
             muiTablePaginationProps={{
                 rowsPerPageOptions: [5, 10, 30]
             }}
+            renderTopToolbarCustomActions={({ table }) => (
+                <Box
+                    sx={{ display: 'flex', gap: '1', p: '0.5rem', flexWrap: 'wrap' }}
+                >
+                    <Button
+                        sx={{
+                            display: 'flex',
+                            gap: '4',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            background: 'background.default'
+                        }}
+                        onClick={handleExportDataPDF}
+                    >
+                        <FileDownloadIcon/> {lang === 'ru' ? 'Экспорт данных PDF' : 'Export Data PDF'}
+                    </Button>
+                    <Button
+                        sx={{
+                            display: 'flex',
+                            gap: '4',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            background: 'background.default'
+                        }}
+                        onClick={handleExportDataCSV}
+                    >
+                        <FileDownloadIcon/> {lang === 'ru' ? 'Экспорт данных CSV' : 'Export Data CSV'}
+                    </Button>
+                </Box>
+            )}
         />
     );
 };
