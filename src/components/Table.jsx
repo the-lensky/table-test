@@ -1,10 +1,10 @@
-import { Avatar, Box, darken, Typography } from '@mui/material';
-import MaterialReactTable from 'material-react-table';
 import { useMemo } from 'react';
+import { useLang } from '../hooks/useLang.jsx';
 import { usersApi } from '../store/index.js';
+import MaterialReactTable from 'material-react-table';
+import { Avatar, Box, darken, Typography } from '@mui/material';
 import { MRT_Localization_RU } from 'material-react-table/locales/ru.js';
 import { MRT_Localization_EN } from 'material-react-table/locales/en';
-import { useLang } from '../hooks/useLang.jsx';
 
 const Table = () => {
     const { data, isLoading } = usersApi.useGetUsersQuery('');

@@ -8,7 +8,6 @@ const LangSwitcher = () => {
     const { lang, setLang } = useLang();
 
     const handleLang = () => {
-        console.log('lang', lang);
         setLang(prev => prev === 'ru' ? 'en' : 'ru');
     };
     return (

@@ -9,7 +9,7 @@ export const useThemeMode = () => {
     const colorMode = useMemo(
         () => ({
             toggleColorMode: () => {
-                setMode((prev) => (prev === 'light' ? 'dark' : 'light'))
+                setMode((prev) => (prev === 'light' ? 'dark' : 'light'));
             }
         }),
         [mode]
@@ -17,51 +17,31 @@ export const useThemeMode = () => {
 
     const globalTheme = useTheme();
     const tableTheme = useMemo(
-        () =>
-            createTheme({
-                palette: {
-                    mode,
-                    primary: globalTheme.palette.secondary,
-                    info: {
-                        main: 'rgb(255,122,0)',
-                    },
-                    background: {
-                        default:
-                            globalTheme.palette.mode === mode
-                                ? 'rgb(254,255,244)'
-                                : '#000'
-                    },
-                    color: {
-                        default:
-                            globalTheme.palette.mode === mode
-                                ? '#000'
-                                : 'rgb(254,255,244)'
-                    },
-                },
-                typography: {
-                    button: {
-                        textTransform: 'none', //customize typography styles for all buttons in table by default
-                        fontSize: '1.2rem',
-                    },
-                },
-                components: {
-                    MuiTooltip: {
-                        styleOverrides: {
-                            tooltip: {
-                                fontSize: '1.1rem', //override to make tooltip font size larger
-                            },
+        () => {
+            return (
+                createTheme({
+                    palette: {
+                        mode: mode,
+                        primary: globalTheme.palette.secondary,
+                        background: {
+                            default:
+                                globalTheme.palette.mode === mode
+                                    ? 'rgb(254,255,244)'
+                                    : '#000'
                         },
-                    },
-                    MuiSwitch: {
-                        styleOverrides: {
-                            thumb: {
-                                color: 'pink', //change the color of the switch thumb in the columns show/hide menu to pink
-                            },
-                        },
-                    },
-                },
-            }),
-        [mode],
+                        color: {
+                            default:
+                                globalTheme.palette.mode === mode
+                                    ? '#000'
+                                    : 'rgb(254,255,244)'
+                        }
+                    }
+                })
+            );
+
+        },
+        [mode]
     );
+
     return [tableTheme, colorMode];
 };
