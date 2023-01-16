@@ -2,14 +2,14 @@ import { useMemo } from 'react';
 import { useLang } from '../hooks/useLang.jsx';
 import { usersApi } from '../store/index.js';
 import MaterialReactTable from 'material-react-table';
-import { Avatar, Box, darken, Tooltip, Typography } from '@mui/material';
+import { Avatar, Box, CircularProgress, darken, Tooltip, Typography } from '@mui/material';
 import { MRT_Localization_RU } from 'material-react-table/locales/ru.js';
 import { MRT_Localization_EN } from 'material-react-table/locales/en';
 import ManIcon from '@mui/icons-material/Man';
 import WomanIcon from '@mui/icons-material/Woman';
 
 const Table = () => {
-    const { data, isLoading } = usersApi.useGetUsersQuery('');
+    const { data } = usersApi.useGetUsersQuery('');
     const users = data ? data.users : [];
     const { lang } = useLang();
     const localization = lang === 'ru' ? MRT_Localization_RU : MRT_Localization_EN;
@@ -17,7 +17,6 @@ const Table = () => {
         showGlobalFilter: true
     };
 
-    console.log('users', users);
     const columns = useMemo(
         () => [
             {
@@ -66,9 +65,6 @@ const Table = () => {
         ],
         [lang]
     );
-
-
-    if (isLoading) return <div>Loading...</div>;
 
     return (
         <MaterialReactTable
