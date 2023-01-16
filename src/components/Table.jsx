@@ -1,15 +1,16 @@
-import { Box, darken, Typography } from '@mui/material';
+import { Avatar, Box, darken, Typography } from '@mui/material';
 import MaterialReactTable from 'material-react-table';
 import { useMemo } from 'react';
 import { usersApi } from '../store/index.js';
-import { useThemeMode } from '../theme.js';
 
 
 const Table = () => {
     const { data, isLoading } = usersApi.useGetUsersQuery('');
     const users = data ? data.users : [];
-
-    const [tableTheme, colorMode] = useThemeMode();
+    console.log('users', users);
+    const initialState = {
+        showGlobalFilter: true,
+    }
 
     const columns = useMemo(
         () => [
@@ -28,7 +29,7 @@ const Table = () => {
             },
             {
                 accessorKey: 'phone',
-                header: 'Phone'
+                header: 'Phone',
             }
         ],
         []
@@ -40,6 +41,8 @@ const Table = () => {
         <MaterialReactTable
             columns={columns}
             data={users}
+            initialState={initialState}
+            enableGlobalFilter
             muiTableBodyProps={{
                 sx: (theme) => ({
                     '& tr:nth-of-type(4n+1)': {
@@ -50,15 +53,21 @@ const Table = () => {
             renderDetailPanel={({ row }) => (
                 <Box
                     sx={{
-                        display: 'grid',
+                        display: 'flex',
                         margin: 'auto',
-                        gridTemplateColumns: '1fr 1fr',
-                        width: '100%'
+                        gap: 2,
+                        alignItems: 'center',
+                        width: '100%',
+                        fontSize: 0.875
                     }}
                 >
-                    <Typography>Address: {row.name}</Typography>
+                    <Avatar alt="Remy Sharp" src={row.original.image} />
+                    <Typography>Address: {row.original.address.address}</Typography>
                 </Box>
             )}
+            muiTablePaginationProps={{
+                rowsPerPageOptions: [5, 10, 30]
+            }}
         />
     )
 }
