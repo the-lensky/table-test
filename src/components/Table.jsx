@@ -2,9 +2,11 @@ import { useMemo } from 'react';
 import { useLang } from '../hooks/useLang.jsx';
 import { usersApi } from '../store/index.js';
 import MaterialReactTable from 'material-react-table';
-import { Avatar, Box, darken, Typography } from '@mui/material';
+import { Avatar, Box, darken, Tooltip, Typography } from '@mui/material';
 import { MRT_Localization_RU } from 'material-react-table/locales/ru.js';
 import { MRT_Localization_EN } from 'material-react-table/locales/en';
+import ManIcon from '@mui/icons-material/Man';
+import WomanIcon from '@mui/icons-material/Woman';
 
 const Table = () => {
     const { data, isLoading } = usersApi.useGetUsersQuery('');
@@ -15,12 +17,39 @@ const Table = () => {
         showGlobalFilter: true
     };
 
+    console.log('users', users);
     const columns = useMemo(
         () => [
             {
                 accessorFn: (row) => `${row.firstName} ${row.lastName}`,
                 id: 'fullname',
-                header: lang === 'ru' ? 'Имя' : 'Full Name'
+                header: lang === 'ru' ? 'Имя' : 'Full Name',
+                Cell: ({ cell }) => (
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            gap: 1,
+                            alignItems: 'center',
+                            width: '100%'
+                        }}
+                    >
+                        <Tooltip
+                            title={lang === 'ru' ? 'Пол' : 'Gender'}
+                            placement="left"
+                            style={{
+                                cursor: 'pointer',
+                                fontSize: '20',
+                                color: cell.row.original.gender === 'male' ? 'blue' : 'pink'
+                            }}
+                        >
+                            {cell.gender === 'male'
+                                ? <ManIcon/>
+                                : <WomanIcon/>
+                            }
+                        </Tooltip>
+                        <Typography>{cell.getValue()}</Typography>
+                    </Box>
+                )
             },
             {
                 accessorKey: 'age',

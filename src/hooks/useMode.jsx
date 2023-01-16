@@ -4,7 +4,7 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 const ColorModeContext = createContext(null);
 
 export const ColorModeProvider = ({ children }) => {
-    const [mode, setMode] = useState('light');
+    const [mode, setMode] = useState('dark');
     const colorMode = useMemo(
         () => ({
             toggleColorMode: () => {
